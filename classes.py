@@ -123,6 +123,62 @@ class UniversalContainer:
         self.min_size()
         pass
 
+class LineEdit:
+
+    x = int
+    y = int
+
+    width = 0
+    height = 0
+
+    text = ''
+
+    selected = False
+    editable = True
+
+    def __init__(self, x, y, width, height, text = ''):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+
+    def coords_in(self,coords, offsetX=0, offsetY=0):
+        x, y = coords
+        if (self.x+offsetX < x < self.x+offsetX+self.width) and (self.y+offsetY < y < self.y+offsetY+self.height):
+            return True
+        else:
+            return False
+
+    def render(self, screen, colour, font, offsetX=0, offsetY=0):
+        text = font.render(self.text, False, colour)
+        x, y = text.get_size()
+        if text != '':
+            self.height = y*1.5
+        if text.get_width() > self.width:
+            self.width = x*1.5
+        if self.selected==False:
+            pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=1)
+        elif self.selected:
+            pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=4)
+        screen.blit(text, (self.x+(self.width-x)/2+offsetX, self.y+offsetY+(self.height-y)/2))
+
+    def check_input(self, event, offsetX=0, offsetY=0):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.coords_in(pygame.mouse.get_pos(), offsetX, offsetY):
+                x, y = pygame.mouse.get_pos()
+                self.selected = True
+            else:
+                self.selected = False
+        if (event.type == pygame.KEYDOWN) and self.selected:
+            if pygame.key.name(event.key) == 'backspace':
+                self.text = self.text[:-1]
+            elif pygame.key.name(event.key) == 'space':
+                self.text += ' '
+            else:
+                self.text += str(pygame.key.name(event.key))
+                pass
+
 class Texture:
 
     x = int
@@ -138,14 +194,23 @@ class Texture:
         self.y = y
         self.image = image
 
-    def render(self, screen, colour, font, offsetX=0, offsetY=0):
+    def coords_in(self,coords, offsetX=0, offsetY=0):
+        x, y = coords
+        if (self.x+offsetX < x < self.x+offsetX+self.width) and (self.y+offsetY < y < self.y+offsetY+self.height):
+            return True
+        else:
+            return False
+
+    def resize(self, width, height):
+        pygame.transform.scale(self.image, (width, height))
+
+    def render(self, screen, colour, font='', offsetX=0, offsetY=0):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         screen.blit(self.image, (self.x+offsetX, self.y+offsetY))
 
     def check_input(self, event, offsetX=0, offsetY=0):
         pass
-
 
 class Slider:
     x = int

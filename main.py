@@ -37,10 +37,11 @@ switch = ui.Switch(10, 90, 30, 20, 'switch')
 timer_label = ui.Label(1500, 10)
 slider = ui.Slider(10, 140, 150, 10)
 slider_value = ui.Label(170, 140, '0')
-graph = ui.Texture(10, 160, pygame.image.load('time.png'))
+graph = ui.Texture(10, 190, pygame.image.load('graph.png'))
+input = ui.LineEdit(10, 160, 100, 20)
 
 #ARRAYS
-container.components = [label, button2, switch, slider, slider_value, graph]
+container.components = [label, button2, switch, slider, slider_value, input, graph]
 ui_arr = [timer_label, button, container]
 
 while True:  #main loop
