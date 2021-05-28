@@ -2,6 +2,7 @@ import pygame
 import sys
 import math
 import time as tm
+import classes as ui
 
 mainClock = pygame.time.Clock()
 
@@ -27,10 +28,16 @@ screen.fill(white)
 mouse_down = False
 
 #OBJECTS
-
+container = ui.UniversalContainer(600, 100, 200, 300)
+label = ui.Label(10, 10, 'label')
+button = ui.Button(10, 30, 30, 20)
+button2 = ui.Button(10, 60, 30, 20, 'press me')
+switch = ui.Switch(10, 90, 30, 20)
+timer_label = ui.Label(1500, 10)
 
 #ARRAYS
-
+container.components = [label, button2, switch]
+ui_arr = [timer_label, button, container]
 
 while True:  #main loop
     screen.fill(white)
@@ -47,6 +54,9 @@ while True:  #main loop
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        for element in ui_arr:
+            element.check_input(event)
 
     pygame.display.update()
     mainClock.tick(360)
