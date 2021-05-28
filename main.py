@@ -1,4 +1,5 @@
 import pygame
+import os
 import sys
 import math
 import time as tm
@@ -32,18 +33,22 @@ container = ui.UniversalContainer(600, 100, 200, 300)
 label = ui.Label(10, 10, 'label')
 button = ui.Button(10, 30, 30, 20)
 button2 = ui.Button(10, 60, 30, 20, 'press me')
-switch = ui.Switch(10, 90, 30, 20)
+switch = ui.Switch(10, 90, 30, 20, 'switch')
 timer_label = ui.Label(1500, 10)
 slider = ui.Slider(10, 140, 150, 10)
+slider_value = ui.Label(170, 140, '0')
+graph = ui.Texture(10, 160, pygame.image.load('time.png'))
 
 #ARRAYS
-container.components = [label, button2, switch, slider]
+container.components = [label, button2, switch, slider, slider_value, graph]
 ui_arr = [timer_label, button, container]
 
 while True:  #main loop
     screen.fill(white)
 
     start = tm.time()
+
+    slider_value.text = str(round(slider.value, 3))
 
     end = tm.time()
     timer_label.text = f"{round((end - start), 5)}"

@@ -123,6 +123,30 @@ class UniversalContainer:
         self.min_size()
         pass
 
+class Texture:
+
+    x = int
+    y = int
+
+    width = 0
+    height = 0
+
+    image = ''
+
+    def __init__(self, x, y, image):
+        self.x = x
+        self.y = y
+        self.image = image
+
+    def render(self, screen, colour, font, offsetX=0, offsetY=0):
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+        screen.blit(self.image, (self.x+offsetX, self.y+offsetY))
+
+    def check_input(self, event, offsetX=0, offsetY=0):
+        pass
+
+
 class Slider:
     x = int
     y = int
@@ -232,7 +256,7 @@ class Button:
             pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=1)
         elif self.pressed:
             pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=4)
-        screen.blit(text, (self.x+(self.width-x)/2+offsetX, self.y+offsetY))
+        screen.blit(text, (self.x+(self.width-x)/2+offsetX, self.y+offsetY+(self.height-y)/2))
 
     def coords_in(self,coords, offsetX=0, offsetY=0):
         x, y = coords
@@ -272,14 +296,15 @@ class Switch:
         self.text = text
 
     def render(self, screen, colour, font, offsetX=0, offsetY=0):
+        text = font.render(self.text, False, colour)
+        x, y = text.get_size()
         if self.text!='':
-            self.width=len(self.text*self.font_size)/2
+            self.width=x*1.5
         if self.pressed==False:
             pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=1)
         elif self.pressed:
             pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=4)
-        text = font.render(self.text, False, colour)
-        screen.blit(text, (self.x+self.font_size/2+offsetX, self.y+offsetY))
+        screen.blit(text, (self.x+(self.width-x)/2+offsetX, self.y+offsetY+(self.height-y)/2))
 
     def coords_in(self,coords, offsetX=0, offsetY=0):
         x, y = coords
