@@ -39,9 +39,9 @@ class UniversalContainer:
             if (component.y+component.height) > maxY:
                 maxY = component.y+component.height
 
-        if self.width < maxX:
+        if self.width < maxX*1.2:
             self.width = maxX*1.2
-        if self.height < maxY:
+        if self.height < maxY*1.2:
             self.height = maxY*1.2
 
     def resize(self, event):
