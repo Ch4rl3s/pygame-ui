@@ -34,9 +34,10 @@ button = ui.Button(10, 30, 30, 20)
 button2 = ui.Button(10, 60, 30, 20, 'press me')
 switch = ui.Switch(10, 90, 30, 20)
 timer_label = ui.Label(1500, 10)
+slider = ui.Slider(10, 140, 150, 10)
 
 #ARRAYS
-container.components = [label, button2, switch]
+container.components = [label, button2, switch, slider]
 ui_arr = [timer_label, button, container]
 
 while True:  #main loop

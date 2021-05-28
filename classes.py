@@ -104,6 +104,61 @@ class UniversalContainer:
         self.min_size()
         pass
 
+class Slider:
+    x = int
+    y = int
+
+    width = 0
+    height = 0
+
+    min_value = 0
+    max_value = 100
+
+    value = 50
+
+    selected = False
+
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def coords_in(self, coords, offsetX=0, offsetY=0):
+        x_value = self.value*self.width/self.max_value
+        x, y = coords
+        if (self.x+offsetX+x_value-3 < x < self.x+offsetX+x_value+3) and (self.y+offsetY-3 < y < self.y+offsetY+self.height+3):
+            return True
+        else:
+            return False
+
+    def value_check(self):
+        if self.value > self.max_value:
+            self.value = self.max_value
+        if self.value < self.min_value:
+            self.value = self.min_value
+
+    def render(self, screen, colour, font,  offsetX=0, offsetY=0):
+        pygame.draw.rect(screen, colour, (self.x+offsetX, self.y+offsetY, self.width, self.height), width=1)
+        x = self.value*self.width/self.max_value
+        pygame.draw.rect(screen, colour, (self.x+x+offsetX-3, self.y+offsetY-3, 6, self.height+6))
+
+    def check_input(self, event, offsetX=0, offsetY=0):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.coords_in(pygame.mouse.get_pos(), offsetX, offsetY):
+                self.selected = True
+        if event.type == pygame.MOUSEBUTTONUP:
+            if self.selected:
+                self.selected = False
+        if self.selected:
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_SIZENS)
+            x, y = pygame.mouse.get_pos()
+            value = (x-offsetX-self.x)*self.max_value/self.width
+            self.value = value
+        else:
+            pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        self.value_check()
+
 class Label:
     x = int
     y = int
