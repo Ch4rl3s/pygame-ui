@@ -18,6 +18,8 @@ class UniversalContainer:
 
     #STATES
     selected = False
+    minimized = False
+
     resizeX = False
     resizeY = False
 
@@ -68,11 +70,12 @@ class UniversalContainer:
             pygame.mouse.set_system_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def render(self, screen, colour, font):
-        pygame.draw.rect(screen, colour, (self.x, self.y, self.width, self.height), width=1)
         pygame.draw.rect(screen, colour, (self.x, self.y, self.width, -self.headerY), width=3)
-        for component in self.components:
-            component.render(screen, colour, font, self.x, self.y)
-            pass
+        if self.minimized==False:
+            pygame.draw.rect(screen, colour, (self.x, self.y, self.width, self.height), width=1)
+            for component in self.components:
+                component.render(screen, colour, font, self.x, self.y)
+                pass
 
     def coords_in(self,coords):
         x, y = coords
@@ -89,8 +92,16 @@ class UniversalContainer:
             return False
 
     def check_input(self, event):
-        for component in self.components:
-            component.check_input(event, self.x, self.y)
+        if self.minimized == False:
+            for component in self.components:
+                component.check_input(event, self.x, self.y)
+        if event.type == pygame.KEYDOWN:
+            if (event.key == pygame.K_m) and self.coords_in_header(pygame.mouse.get_pos()):
+                if self.minimized == False:
+                    self.minimized = True
+                else:
+                    self.minimized = False
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.coords_in_header(pygame.mouse.get_pos()):
                 x, y = pygame.mouse.get_pos()
