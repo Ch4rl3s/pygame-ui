@@ -13,6 +13,9 @@ class UniversalContainer:
 
     components = []
 
+    mouseOffsetX = 0
+    mouseOffsetY = 0
+
     #STATES
     selected = False
     resizeX = False
@@ -90,14 +93,19 @@ class UniversalContainer:
             component.check_input(event, self.x, self.y)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.coords_in_header(pygame.mouse.get_pos()):
+                x, y = pygame.mouse.get_pos()
+                self.mouseOffsetX = x - self.x
+                self.mouseOffsetY = y - self.y
                 self.selected = True
         if event.type == pygame.MOUSEBUTTONUP:
             if self.selected:
+                self.mouseOffsetX = 0
+                self.mouseOffsetY = 0
                 self.selected = False
         if self.selected:
             x, y = pygame.mouse.get_pos()
-            self.x = x
-            self.y = y
+            self.x = x - self.mouseOffsetX
+            self.y = y - self.mouseOffsetY
             if event.type == pygame.MOUSEBUTTONUP:
                 self.selected = False
         self.resize(event)
