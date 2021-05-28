@@ -31,7 +31,7 @@ class UniversalContainer:
         for component in self.components:
             if (component.x+component.width) > maxX:
                 maxX = component.x+component.width
-            if (component.y+component.height) > maxX:
+            if (component.y+component.height) > maxY:
                 maxY = component.y+component.height
 
         if self.width < maxX:
