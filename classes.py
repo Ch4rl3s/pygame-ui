@@ -175,6 +175,8 @@ class LineEdit:
                 self.text = self.text[:-1]
             elif pygame.key.name(event.key) == 'space':
                 self.text += ' '
+            elif pygame.key.name(event.key) == 'return':
+                self.selected = False
             else:
                 self.text += str(pygame.key.name(event.key))
                 pass
